@@ -15,7 +15,7 @@ const products = [
 ]
 
 router.get('/', (req, res) => {
-  res.render("products", { products })
+  res.render("./products/products", { products })
 })
 
 module.exports = router
