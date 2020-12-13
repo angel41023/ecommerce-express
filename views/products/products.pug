@@ -1,0 +1,13 @@
+extends ../layouts/layout.pug
+block hero
+  section.hero.is-dark.is-bold
+    .hero-body
+      .container
+        h1.title Store
+        h2.subtitle Find the best products a the best price
+block content
+  .container(style='flex: 1; padding: 50px 0;')
+    .columns.is-multiline
+      each product in products
+        .column.is-one-quarter
+          include ./product-item.pug

@@ -1,0 +1,11 @@
+.card
+  .card-image
+    figure.image(style="height: 250px")
+      img(src=product.image style="height: 100%; object-fit: cover")
+  .card-content
+    h2.title= product.name
+    .button.is-fullwidth.is-primary
+      span.icon
+        i.fas.fa-shopping-cart
+      span Add 
+        strong= `${product.price} USD`
