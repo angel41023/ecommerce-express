@@ -1,4 +1,3 @@
-const productsMocks = require('../utils/mocks/products')
 const MongoLib = require('../lib/mongo')
 
 class ProductsService {
@@ -13,20 +12,24 @@ class ProductsService {
     return products || []
   }
 
-  getProduct({ productId }){
-    return Promise.resolve(productsMocks[0])
+  async getProduct({ productId }){
+    const product = await this.mongoDB.get(this.collection, productId)
+    return product || {}
   }
 
-  createProduct({ product }){
-    return Promise.resolve(productsMocks[0])
+  async createProduct({ product }){
+    const createdProductId = await this.mongoDB.create(this.collection, product)
+    return createdProductId
   }
 
-  updateProduct({ productId, product }){
-    return Promise.resolve(productsMocks[0])
+  async updateProduct({ productId, product }){
+    const updatedProductId = await this.mongoDB.update(this.collection, productId, product)
+    return updatedProductId
   }
 
-  deleteProduct({ productId }){
-    return Promise.resolve(productsMocks[0])
+  async deleteProduct({ productId }){
+    const deletedProductId = await this.mongoDB.delete(this.collection, productId)
+    return deletedProductId
   }
 }
 
