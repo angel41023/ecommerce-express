@@ -1,15 +1,24 @@
 const express = require('express')
 const ProductsService = require('../../services/products')
 
+const validation = require('../../utils/middlewares/validationHandler')
+
+const {
+  productIdSchema,
+  productTagSchema,
+  createProductSchema,
+  updateProductSchema
+} = require('../../utils/schemas/products')
+
 const router = express.Router()
 
-const productService = new ProductsService
+const productService = new ProductsService()
+
 
 router.get('/', async (req, res, next) => {
   const { tags } = req.query
 
   try{
-    throw new Error('This is an error from API')
     const products = await productService.getProducts({ tags })
   
     res.status(200).json({
@@ -36,7 +45,7 @@ router.get('/:productId', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', validation(createProductSchema), async (req, res, next) => {
   const { body: product } = req
 
   try{
@@ -51,20 +60,23 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/:productId', async (req, res, next) => {
+router.put('/:productId', 
+  validation({productId: productIdSchema}, "params"), 
+  validation(updateProductSchema), 
+  async (req, res, next) => {
   const { productId } = req.params
   const { body: product } = req
 
-  try{
-    const updatedProduct = await productService.updateProduct({ productId, product })
-  
-    res.status(200).json({
-      data: updatedProduct, 
-      message: 'product updated'
-    })
-  }catch(err){
-    next(err)
-  }
+    try{
+      const updatedProduct = await productService.updateProduct({ productId, product })
+    
+      res.status(200).json({
+        data: updatedProduct, 
+        message: 'product updated'
+      })
+    }catch(err){
+      next(err)
+    }
 })
 
 router.delete('/:productId', async (req, res, next) => {
